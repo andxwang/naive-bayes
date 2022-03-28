@@ -1,9 +1,20 @@
 #include <catch2/catch.hpp>
 
-#include <core/rename_this_file.h>
+#include <core/image_processor.h>
+#include <iostream>
+using std::cout;
+using std::endl;
 
-TEST_CASE("Check that 126 is the best class") {
-  REQUIRE(naivebayes::Placeholder().GetBestClass() == "CS 126");
+using namespace naivebayes;
+
+TEST_CASE("Image processor initialization") {
+  ImageProcessor processor;
+  string file_path = "/Users/andywang/Downloads/Cinder/my-projects/naivebayes-andyw-git/data/images_small.txt";
+  std::ifstream input_file(file_path);
+  if (input_file.is_open()) {
+    input_file >> processor;
+  }
+  REQUIRE(processor.images_.at(0).digit_ == 5);
 }
 
 /*
