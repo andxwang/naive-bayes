@@ -48,6 +48,8 @@ class Model {
    */
   void CalculateFeatureProbabilities();
 
+  float CalculateMaxLikelihood();
+
   /**
    * Operator overload for output stream.
    * @param ostream the output stream

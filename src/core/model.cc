@@ -63,6 +63,10 @@ void Model::CalculateFeatureProbabilities() {
   }
 }
 
+float Model::CalculateMaxLikelihood() {
+  return 0;
+}
+
 std::ostream& operator<<(std::ostream& ostream, const Model& model) {
   // output priors
   for (int i = 0; i < model.kNumDigits; i++) {
