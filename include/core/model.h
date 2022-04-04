@@ -68,16 +68,23 @@ class Model {
   const vector<vector<vector<float>>>& GetFeatureProbabilities() const;
 
  private:
+  //=========== const variables ===========//
   const char kBlackPixel = '#';
   const char kGrayPixel = '+';
   const float kLaplace = 1.0;
-  ImageProcessor processor_;
-  const int kNumDigits = 10; // should always be 10
+  const int kNumDigits = 10; // should always be 10, i.e. [0,9]
   static const int kDefaultImageSize = 28;
+
+  //=========== member objects ===========//
+  ImageProcessor processor_;
   int image_size_;
-  int num_images_; // 5000 in training data file
+  int num_images_; // 5000 images in training data file
+  //=========== vectors for probability calculations ===========//
+  // frequency of classes/digits by index
   vector<int> classes_count_;
+  // priors for each class/digit
   vector<float> priors_;
+  // 3d vector of image-wise feature probs for each digit/class, e.g. 10x28x28
   vector<vector<vector<float>>> feature_probabilities_;
 };
 

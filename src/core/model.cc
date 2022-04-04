@@ -18,7 +18,7 @@ Model::Model(const string& file_path, int image_size)
   num_images_ = processor_.images_.size();
   // count number of classes
   classes_count_ = vector<int>(kNumDigits);
-  for (auto & image : processor_.images_) {
+  for (ImageProcessor::Image& image : processor_.images_) {
     classes_count_.at(image.digit_)++;
   }
 }
@@ -31,7 +31,7 @@ void Model::Train() {
 void Model::CalculatePriors() {
   priors_.clear();
   priors_.reserve(kNumDigits);
-  for (int freq : classes_count_) {
+  for (size_t freq : classes_count_) {
     priors_.push_back((kLaplace + freq) / (kNumDigits * kLaplace + num_images_));
   }
 }
@@ -42,7 +42,7 @@ void Model::CalculateFeatureProbabilities() {
        (image_size_,vector<float>
         (image_size_,0)));
   // get shaded pixel counts for each (i,j)
-  for (auto & image : processor_.images_) {
+  for (ImageProcessor::Image& image : processor_.images_) {
     for (int row = 0; row < image_size_; row++) {
       for (int col = 0; col < image_size_; col++) {
         if (image.image_arr2d_[row][col] == kBlackPixel ||
