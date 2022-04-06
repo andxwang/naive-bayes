@@ -44,8 +44,8 @@ int main() {
   for (auto & image : test_processor.images_) {
     vector<vector<char>> image2d = image.image_arr2d_;
     int result = full_model.CalculateMaxLikelihoodDigit(image2d);
-    cout << "Actual: " << image.digit_ << "; ";
-    cout << "Guess: " << result << endl;
+//    cout << "Actual: " << image.digit_ << "; ";
+//    cout << "Guess: " << result << endl;
     if (image.digit_ == result)
       correct_total++;
   }

@@ -49,31 +49,6 @@ TEST_CASE("Feature probability calculation") {
   }
 }
 
-TEST_CASE("Log-Sum-Exp") {
-  // WILL IMPLEMENT for week 2.
-//  vector<double> probs;
-//  probs.reserve(784);
-//
-//  for (int i = 0; i < 28; i++) {
-//    for (int j = 0; j < 28; j++) {
-//      double feat_prob = full_model.CalculateFeatureProbability({i, j}, true, 8);
-//      probs.push_back(feat_prob);
-//    }
-//  }
-//
-//  std::sort(probs.begin(), probs.end());
-//  double max_elem = probs[probs.size()-1];
-//  cout << "Max: " << max_elem << endl;
-//
-//  double sum_prob = 0;
-//  for (auto e : probs) {
-//    sum_prob += std::exp(e - max_elem);
-//  }
-//  cout << "sum_prob: " << sum_prob << endl;
-//  double prob = max_elem + std::log(sum_prob);
-//  cout << prob << endl;
-}
-
 TEST_CASE("Write to output file") {
   full_model.Train();
   string output_path = "/Users/andywang/Downloads/Cinder/my-projects/naivebayes-andyw-git/data/output.txt";
