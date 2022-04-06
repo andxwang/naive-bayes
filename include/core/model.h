@@ -12,6 +12,14 @@ namespace naivebayes {
 
 class Model {
  public:
+
+  /**
+   * No-parameter constructor for model.
+   * Used if output data already exists and is to be processed by model
+   * via instream operator.
+   */
+  Model();
+
   /**
    * One-parameter onstructor for a Model object.
    * @param file_path the file path of the training data and labels
@@ -48,7 +56,14 @@ class Model {
    */
   void CalculateFeatureProbabilities();
 
-  float CalculateMaxLikelihood();
+  /**
+   * Calculate the digit/class with the
+   * maximum likelihood score from the training data
+   * using sum of logs to avoid underflow.
+   * @param image the image: a 2d vector of characters
+   * @return the digit/class with the highest likelihood score
+   */
+  int CalculateMaxLikelihoodDigit(const vector<vector<char>>& image);
 
   /**
    * Operator overload for output stream.
@@ -76,6 +91,7 @@ class Model {
   const float kLaplace = 1.0;
   const int kNumDigits = 10; // should always be 10, i.e. [0,9]
   static const int kDefaultImageSize = 28;
+  const float kGrayFactor = 0.78; // when read gray pixel, add this to prob instead of 1.0
 
   //=========== member objects ===========//
   ImageProcessor processor_;

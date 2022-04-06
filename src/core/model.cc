@@ -7,6 +7,8 @@
 
 namespace naivebayes {
 
+Model::Model() : Model("", kDefaultImageSize) {}
+
 Model::Model(const string& file_path) : Model(file_path, kDefaultImageSize) {}
 
 Model::Model(const string& file_path, int image_size)
@@ -45,9 +47,10 @@ void Model::CalculateFeatureProbabilities() {
   for (ImageProcessor::Image& image : processor_.images_) {
     for (int row = 0; row < image_size_; row++) {
       for (int col = 0; col < image_size_; col++) {
-        if (image.image_arr2d_[row][col] == kBlackPixel ||
-            image.image_arr2d_[row][col] == kGrayPixel)
+        if (image.image_arr2d_[row][col] == kBlackPixel)
           feature_probabilities_.at(image.digit_)[row][col]++;
+        else if (image.image_arr2d_[row][col] == kGrayPixel)
+          feature_probabilities_.at(image.digit_)[row][col] += kGrayFactor;
       }
     }
   }
@@ -63,8 +66,29 @@ void Model::CalculateFeatureProbabilities() {
   }
 }
 
-float Model::CalculateMaxLikelihood() {
-  return 0;
+int Model::CalculateMaxLikelihoodDigit(const vector<vector<char>>& image) {
+  vector<float> likelihoods;
+  float max_likelihood = INT_MIN;
+  int digit_max_likelihood = -1;
+  likelihoods.reserve(kNumDigits);
+  for (size_t digit = 0; digit < kNumDigits; digit++) {
+    float likelihood = log(priors_.at(digit));
+    for (size_t row = 0; row < image.size(); row++) {
+      for (size_t col = 0; col < image.at(0).size(); col++) {
+        if (image[row][col] == kBlackPixel || image[row][col] == kGrayPixel)
+          likelihood += log(feature_probabilities_.at(digit)[row][col]);
+        else
+          likelihood += log(1.0 - feature_probabilities_.at(digit)[row][col]);
+      }
+    }
+//    std::cout << digit << ": " << likelihood << std::endl;
+    likelihoods.push_back(likelihood);
+    if (likelihood > max_likelihood) {
+      max_likelihood = likelihood;
+      digit_max_likelihood = digit;
+    }
+  }
+  return digit_max_likelihood;
 }
 
 std::ostream& operator<<(std::ostream& ostream, const Model& model) {
